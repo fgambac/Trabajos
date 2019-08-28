@@ -1,0 +1,28 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `averageCat`(idCat INT) RETURNS int(11)
+BEGIN
+declare promedio double;
+
+select Sum(producto.precio)/count(producto.idProducto) from producto join publicacion using(idProducto) where publicacion.idCategoria=idCat into promedio;
+RETURN promedio;
+END  
+
+-------
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `eliminarPublicacion`(idPublicacionX int(11),idUsuarioX int(11)) RETURNS varchar(50) CHARSET utf8
+BEGIN
+	DECLARE idVendedorX int(11);
+    DECLARE resp varchar(50) default=' ';
+    select idVendedor into idVendedorX from publicacion where idVendedor=idUsuarioX; 
+	if idVendedorX is not null then
+		delete from publicacion where idPublicacion=idPublicacionX;
+        set resp="Se ha borrado l
+        a publicacion exitosamente";
+	elseif idVendedorX is null then 
+		set resp="El usuario no corresponde con el vendedor";
+	end if;
+	return resp;
+END
+
+
+
+
